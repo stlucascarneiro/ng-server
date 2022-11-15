@@ -1,1 +1,3 @@
-console.log('teste')
+import { msg } from "@controllers/Message";
+
+console.log(msg)
