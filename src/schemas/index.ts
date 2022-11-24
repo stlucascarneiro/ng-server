@@ -8,6 +8,6 @@ export const schema = makeSchema({
   types: [Account, Date, Transaction, Token, User, Query, Mutation],
   outputs: {
     schema: path.join(__dirname, 'schema.graphql'),
-    typegen: path.join(__dirname, '../../prisma/generated', 'nexus.ts')
+    typegen: path.join(__dirname, '../prisma/generated', 'nexus.ts')
   }
 })

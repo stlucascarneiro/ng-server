@@ -6,8 +6,9 @@
   "author": "Lucas Carneiro",
   "license": "MIT",
   "scripts": {
-    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/index.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/index.ts",
+    "build": "babel src --extensions \".js,.ts,.prisma,.toml\" --out-dir dist --copy-files --no-copy-ignored",
+    "start": "node dist/index.js"
   },
   "prisma": {
     "seed": "ts-node prisma/seeds/index.ts"

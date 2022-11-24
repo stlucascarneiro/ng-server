@@ -1,7 +1,7 @@
 import { TokenMiddlewares } from "@middlewares/Token";
 import { Transaction } from "@prisma/client";
 import { GraphQLError } from "graphql";
-import { prisma } from "src";
+import { prisma } from "..";
 import { AccountController } from "./Account";
 import { IDate } from "./types";
 
