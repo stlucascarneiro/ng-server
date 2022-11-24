@@ -30,13 +30,13 @@ export class UserController {
 
   public static async authenticate(apiKey: string, username: string, password: string): Promise<string>{
     if(!TokenMiddlewares.validateApiKey(apiKey)) throw new GraphQLError('Não autorizado', {extensions: {code: 401}})
-    if(!UserMiddlewares.validateUsername(username)) throw new GraphQLError('Invalid username', {extensions: {code: 400}})
-    if(!UserMiddlewares.validatePassword(password)) throw new GraphQLError('Senha inválida', {extensions: {code: 400}})
+    if(!UserMiddlewares.validateUsername(username)) throw new GraphQLError('Nome de usuário ou senha inválidos', {extensions: {code: 400}})
+    if(!UserMiddlewares.validatePassword(password)) throw new GraphQLError('Nome de usuário ou senha inválidos', {extensions: {code: 400}})
 
     const user = await prisma.user.findUnique({where: {username}})
-    if(!user) throw new Error('User not found')    
+    if(!user) throw new GraphQLError('Nome de usuário ou senha inválidos', {extensions: {code: 400}})   
 
-    if(!await UserMiddlewares.authenticatePassword(password, user.password)) throw new GraphQLError('Senha incorreta', {extensions: {code: 400}})
+    if(!await UserMiddlewares.authenticatePassword(password, user.password)) throw new GraphQLError('Nome de usuário ou senha inválidos', {extensions: {code: 400}})
 
     return TokenMiddlewares.generateAccessToken(user)
   }
@@ -50,6 +50,6 @@ export class UserController {
     else throw new GraphQLError('Requisição inválida', {extensions: {code: 400}})
 
     const user = prisma.user.findUnique({where})
-    
+    return user
   }
 }

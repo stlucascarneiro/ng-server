@@ -3,18 +3,32 @@ import { Transaction } from "@prisma/client";
 import { GraphQLError } from "graphql";
 import { prisma } from "src";
 import { AccountController } from "./Account";
+import { IDate } from "./types";
 
 
 export class TransactionController {
-  public static async getTransactions(token: string, accountId: number): Promise<Transaction[]>{
+  public static async getTransactions(token: string, accountId: number, fromDate: IDate | undefined, toDate: IDate | undefined, filterBy: 'todos' | 'ganhos' | 'gastos'): Promise<Transaction[]>{
     if(!TokenMiddlewares.validateAccessToken(token)) throw new GraphQLError('Token Inválido', {extensions: {code: 401}})
+    
+
+    let gte = new Date()
+    if(fromDate) gte = new Date(fromDate.year, fromDate.month - 1, fromDate.day)
+    else gte.setMonth(gte.getMonth() - 1)
+    
+    let lte = new Date()
+    if(toDate) lte = new Date(toDate.year, toDate.month, toDate.day, 23, 59, 59)
+
+    const OR = []
+    if(filterBy === 'todos' || filterBy === 'ganhos') OR.push({creditedAccountId: accountId}) 
+    if(filterBy === 'todos' || filterBy === 'gastos') OR.push({debitedAccountId: accountId}) 
 
     const transactions = await prisma.transaction.findMany({
       where: {
-        OR: [
-          {creditedAccountId: accountId},
-          {debitedAccountId: accountId}
-        ]
+        OR,
+        createdAt: { gte, lte },
+      },
+      orderBy: {
+        createdAt: 'desc'
       },
       include: {
         creditedAccount: {
@@ -59,7 +73,6 @@ export class TransactionController {
         creditedAccount: {include: {user: true}}
       }
     })
-    console.log(transaction)
 
     return transaction
   }

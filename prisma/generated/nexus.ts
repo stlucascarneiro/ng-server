@@ -14,6 +14,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  Date: { // input type
+    day?: number | null; // Int
+    month?: number | null; // Int
+    year?: number | null; // Int
+  }
 }
 
 export interface NexusGenEnums {
@@ -149,6 +154,9 @@ export interface NexusGenArgTypes {
     }
     getTransactions: { // args
       accountId: number; // Int!
+      filterBy: string | null; // String
+      fromDate?: NexusGenInputs['Date'] | null; // Date
+      toDate?: NexusGenInputs['Date'] | null; // Date
       token: string; // String!
     }
   }
@@ -162,7 +170,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

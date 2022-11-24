@@ -1,7 +1,7 @@
 import { AccountController } from "@controllers/Account";
 import { TransactionController } from "@controllers/Transaction";
 import { UserController } from "@controllers/User";
-import { queryType, nonNull, intArg, stringArg } from "nexus";
+import { queryType, nonNull, intArg, stringArg, arg } from "nexus";
 
 export const Query = queryType({
   definition(t) {
@@ -34,10 +34,13 @@ export const Query = queryType({
       type: "Transaction",
       args: {
         token: nonNull(stringArg()),
-        accountId: nonNull(intArg())
+        accountId: nonNull(intArg()),
+        fromDate: arg({type: 'Date', description: 'Data de partida da consulta'}),
+        toDate: arg({type: 'Date', description: 'Data de limite da consulta'}),
+        filterBy: stringArg({default: 'todos'})
       },
-      resolve: async (_, {token, accountId}) => {
-        const transactions = await TransactionController.getTransactions(token, accountId)
+      resolve: async (_, {token, accountId, fromDate, toDate, filterBy}) => {
+        const transactions = await TransactionController.getTransactions(token, accountId, fromDate, toDate, filterBy)
         return transactions
       }
     })

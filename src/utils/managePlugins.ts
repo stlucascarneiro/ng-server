@@ -2,6 +2,6 @@ import { ApolloServerPluginLandingPageProductionDefault } from "@apollo/server/p
 
 export const managePlugins = () => {
   const plugins = []
-  if(process.env.NODE_ENV === 'prd') plugins.push(ApolloServerPluginLandingPageProductionDefault())
+  if(process.env.NODE_ENV === '') plugins.push(ApolloServerPluginLandingPageProductionDefault())
   return plugins
 }

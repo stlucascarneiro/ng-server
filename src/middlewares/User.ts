@@ -28,5 +28,5 @@ export class UserMiddlewares {
   public static async authenticatePassword(password: string, hashPassword: string) {
     const isAuthentic = await bcrypt.compare(password, hashPassword)
     return isAuthentic
-}
+  }
 }

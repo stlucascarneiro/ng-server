@@ -1,5 +1,5 @@
 import { objectType } from "nexus";
-import { extendType, NexusObjectTypeDef } from "nexus/dist/core";
+import { extendType, inputObjectType, NexusObjectTypeDef } from "nexus/dist/core";
 
 export const User = objectType({
   name: "User",
@@ -33,5 +33,14 @@ export const Token = objectType({
   name: "Token",
   definition(t) {
     t.string('token')
+  },
+})
+
+export const Date = inputObjectType({
+  name: "Date", 
+  definition(t) {
+    t.int('day')
+    t.int('month')
+    t.int('year')
   },
 })

@@ -8,6 +8,12 @@ type Account {
   user: User
 }
 
+input Date {
+  day: Int
+  month: Int
+  year: Int
+}
+
 type Mutation {
   createTransaction(creditedAccountUsername: String!, debitedAccountId: Int!, token: String!, value: Float!): Transaction
   createUser(apiKey: String!, password: String!, username: String!): User
@@ -16,7 +22,17 @@ type Mutation {
 type Query {
   authenticateUser(apiKey: String!, password: String!, username: String!): Token
   getAccount(token: String!, userId: Int!): Account
-  getTransactions(accountId: Int!, token: String!): [Transaction]
+  getTransactions(
+    accountId: Int!
+    filterBy: String = "todos"
+
+    """Data de partida da consulta"""
+    fromDate: Date
+
+    """Data de limite da consulta"""
+    toDate: Date
+    token: String!
+  ): [Transaction]
 }
 
 type Token {
