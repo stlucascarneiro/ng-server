@@ -7,4 +7,4 @@ COPY . .
 RUN yarn install
 RUN yarn build
 
-ENTRYPOINT yarn start
+ENTRYPOINT npx prisma migrate deploy; npx prisma db seed; yarn start
